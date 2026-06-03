@@ -24,3 +24,8 @@ export const deleteClient = async (id: number) => {
     const response = await api.delete(`/Client/${id}`);
     return response.data;
 };
+
+export const getClientsListing = async (params: { PageNumber: number; PageSize: number }) => {
+    const response = await api.post("/Client/listing", { params });
+    return response.data;
+};

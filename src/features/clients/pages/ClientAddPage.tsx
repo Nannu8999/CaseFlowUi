@@ -37,7 +37,6 @@ function ClientAddPage() {
 
     };
 
-
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
 
         const { name, value } = e.target;
@@ -68,7 +67,6 @@ function ClientAddPage() {
         }
 
     };
-
 
     return (
         <div className="max-w-2xl mx-auto space-y-6">

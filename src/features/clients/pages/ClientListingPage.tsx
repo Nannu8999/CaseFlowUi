@@ -1,40 +1,38 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { getClients } from "../services/clientService";
+import { getClientsListing } from "../services/clientService";
 import type { Client } from "../types/ClientTypes";
 import ClientTable from "../components/ClientTable";
 
 function ClientListingPage() {
+
     const navigate = useNavigate();
     const [clients, setClients] = useState<Client[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
 
+    const fetchClients = async () => {
+        try {
+            const data = await getClientsListing({ PageNumber: 1, PageSize: 10 });
+            setClients(data);
+        } catch (err: unknown) {
+            const message =
+                err instanceof Error ? err.message : "Failed to fetch clients. Please try again.";
+            setError(message);
+        } finally {
+            setLoading(false);
+        }
+    };
+
     useEffect(() => {
-
-        const fetchClients = async () => {
-            try {
-                const data = await getClients();
-                setClients(data);
-            } catch (err: unknown) {
-                const message =
-                    err instanceof Error ? err.message : "Failed to fetch clients. Please try again.";
-                setError(message);
-            } finally {
-                setLoading(false);
-            }
-        };
-
         fetchClients();
-
     }, []);
-
-
 
     return (
 
         <div className="space-y-6">
+
             {/* Page header */}
             <div className="flex flex-wrap items-start justify-between gap-3">
                 <div>
@@ -65,6 +63,7 @@ function ClientListingPage() {
             {!loading && !error && (
                 <ClientTable clients={clients} />
             )}
+
         </div>
 
     );
